@@ -83,21 +83,6 @@ xy <- terra::xyFromCell(grid,
 ```
 
 
-```{r}
-coop <- st_as_sf(as.data.frame(xy),
-                 coords())
-
-```
-
-```{r}
-res <- gstat(formula = MONTHSUM ~ 1,
-             locations = rfdata_sf,
-             nmax = 15,
-             set = list(idp = 0))
-
-resp <- predict(res, coop)
-resp$x <- st_coordinates
-```
 
 
 
