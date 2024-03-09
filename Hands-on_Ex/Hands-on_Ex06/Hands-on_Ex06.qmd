@@ -1,5 +1,6 @@
 ---
 title: "Hands-on_Ex06"
+author: Yebin Du
 ---
 
 ```{r}
