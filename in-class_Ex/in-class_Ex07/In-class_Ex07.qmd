@@ -1,0 +1,12 @@
+---
+title: "In-class_Ex07"
+author: Yebin Du
+date: "March 9,2024"
+date-modified: "last modified"
+execute: 
+  eval: true
+  echo: true
+  message: false
+  warning: false
+  freeze: true
+---

@@ -1,0 +1,762 @@
+---
+title: "Hands-on_Ex09"
+author: Yebin Du
+---
+
+# Modelling, Visualising and Analysing Network Data with R
+
+## Getting Started
+```{r}
+pacman::p_load(igraph, tidygraph, ggraph, 
+               visNetwork, lubridate, clock,
+               tidyverse, graphlayouts)
+```
+
+
+```{r}
+GAStech_nodes <- read_csv("data/GAStech_email_node.csv",show_col_types = FALSE)
+GAStech_edges <- read_csv("data/GAStech_email_edge-v2.csv",show_col_types = FALSE)
+```
+
+
+
+## Reviewing the imported data
+```{r}
+library(dplyr)  # To install only dplyr
+
+glimpse(GAStech_edges)
+```
+
+
+
+## Data Wrangling
+```{r}
+library(lubridate)
+GAStech_edges <- GAStech_edges %>%
+  mutate(SendDate = dmy(SentDate)) %>%
+  mutate(Weekday = wday(SentDate,
+                        label = TRUE,
+                        abbr = FALSE))
+```
+
+
+## Wrangling attributes
+```{r}
+GAStech_edges_aggregated <- GAStech_edges %>%
+  filter(MainSubject == "Work related") %>%
+  group_by(source, target, Weekday) %>%
+  summarise(Weight = n(), .groups = "drop") %>%
+  filter(source!=target) %>%
+  filter(Weight > 1)
+```
+
+
+
+## Using tbl_graph() to build tidygraph data model.
+```{r}
+library(tidygraph)
+
+GAStech_graph <- tbl_graph(nodes = GAStech_nodes,
+                           edges = GAStech_edges_aggregated, 
+                           directed = TRUE)
+```
+
+
+## Reviewing the output tidygraph’s graph object
+```{r}
+GAStech_graph
+```
+
+
+
+## Changing the active object
+```{r}
+GAStech_graph %>%
+  activate(edges) %>%
+  arrange(desc(Weight))
+```
+
+
+
+## Plotting a basic network graph
+```{r}
+library(ggraph)
+
+ggraph(GAStech_graph) +
+  geom_edge_link() +
+  geom_node_point()
+```
+
+
+
+## Changing the default network graph theme
+```{r}
+g <- ggraph(GAStech_graph) + 
+  geom_edge_link(aes()) +
+  geom_node_point(aes())
+
+g + theme_graph()
+```
+
+
+
+## Changing the coloring of the plot
+```{r}
+g <- ggraph(GAStech_graph) + 
+  geom_edge_link(aes(colour = 'grey50')) +
+  geom_node_point(aes(colour = 'grey40'))
+
+g + theme_graph(background = 'grey10',
+                text_colour = 'white')
+```
+
+
+
+## Fruchterman and Reingold layout 
+```{r}
+g <- ggraph(GAStech_graph, 
+            layout = "fr") +
+  geom_edge_link(aes()) +
+  geom_node_point(aes())
+
+g + theme_graph()
+```
+
+
+
+## Modifying network nodes
+```{r}
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes()) +
+  geom_node_point(aes(colour = Department, 
+                      size = 3))
+
+g + theme_graph()
+```
+
+
+
+## Modifying edges
+```{r}
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") +
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 3)
+
+g + theme_graph()
+```
+
+
+## Creating facet graphs
+
+### Working with facet_edges()
+```{r}
+set_graph_style()
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2)
+
+g + facet_edges(~Weekday)
+```
+
+
+
+### Working with facet_edges()
+```{r}
+set_graph_style()
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2) +
+  theme(legend.position = 'bottom')
+  
+g + facet_edges(~Weekday)
+```
+
+
+
+### A framed facet graph
+```{r}
+set_graph_style() 
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2)
+  
+g + facet_edges(~Weekday) +
+  th_foreground(foreground = "grey80",  
+                border = TRUE) +
+  theme(legend.position = 'bottom')
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
+
+### 
+```{r}
+
+```
+
+
