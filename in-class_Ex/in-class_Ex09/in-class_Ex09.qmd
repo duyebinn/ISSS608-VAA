@@ -111,3 +111,53 @@ g <- ggraph(GAStech_graph,
 
 g + theme_graph()
 ```
+
+
+### facet_edges()
+
+```{r}
+set_graph_style()
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2)
+
+g + facet_edges(~Weekday)
+```
+
+
+```{r}
+set_graph_style()
+
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2)
+  
+g + facet_nodes(~Department)+
+  th_foreground(foreground = "grey80",  
+                border = TRUE) +
+  theme(legend.position = 'bottom')
+```
+
+```{r}
+g <- GAStech_graph %>%
+  mutate(betweenness_centrality = centrality_betweenness()) %>%
+  ggraph(layout = "fr") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department,
+            size=betweenness_centrality))
+g + theme_graph()
+```
+
+
+
