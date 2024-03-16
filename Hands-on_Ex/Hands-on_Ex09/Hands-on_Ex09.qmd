@@ -6,30 +6,28 @@ author: Yebin Du
 # Modelling, Visualising and Analysing Network Data with R
 
 ## Getting Started
+
 ```{r}
 pacman::p_load(igraph, tidygraph, ggraph, 
                visNetwork, lubridate, clock,
                tidyverse, graphlayouts)
 ```
 
-
 ```{r}
 GAStech_nodes <- read_csv("data/GAStech_email_node.csv",show_col_types = FALSE)
 GAStech_edges <- read_csv("data/GAStech_email_edge-v2.csv",show_col_types = FALSE)
 ```
 
-
-
 ## Reviewing the imported data
+
 ```{r}
 library(dplyr)  # To install only dplyr
 
 glimpse(GAStech_edges)
 ```
 
-
-
 ## Data Wrangling
+
 ```{r}
 library(lubridate)
 GAStech_edges <- GAStech_edges %>%
@@ -39,8 +37,8 @@ GAStech_edges <- GAStech_edges %>%
                         abbr = FALSE))
 ```
 
-
 ## Wrangling attributes
+
 ```{r}
 GAStech_edges_aggregated <- GAStech_edges %>%
   filter(MainSubject == "Work related") %>%
@@ -50,9 +48,8 @@ GAStech_edges_aggregated <- GAStech_edges %>%
   filter(Weight > 1)
 ```
 
-
-
 ## Using tbl_graph() to build tidygraph data model.
+
 ```{r}
 library(tidygraph)
 
@@ -61,24 +58,22 @@ GAStech_graph <- tbl_graph(nodes = GAStech_nodes,
                            directed = TRUE)
 ```
 
-
 ## Reviewing the output tidygraph’s graph object
+
 ```{r}
 GAStech_graph
 ```
 
-
-
 ## Changing the active object
+
 ```{r}
 GAStech_graph %>%
   activate(edges) %>%
   arrange(desc(Weight))
 ```
 
-
-
 ## Plotting a basic network graph
+
 ```{r}
 library(ggraph)
 
@@ -87,9 +82,8 @@ ggraph(GAStech_graph) +
   geom_node_point()
 ```
 
-
-
 ## Changing the default network graph theme
+
 ```{r}
 g <- ggraph(GAStech_graph) + 
   geom_edge_link(aes()) +
@@ -98,9 +92,8 @@ g <- ggraph(GAStech_graph) +
 g + theme_graph()
 ```
 
-
-
 ## Changing the coloring of the plot
+
 ```{r}
 g <- ggraph(GAStech_graph) + 
   geom_edge_link(aes(colour = 'grey50')) +
@@ -110,9 +103,8 @@ g + theme_graph(background = 'grey10',
                 text_colour = 'white')
 ```
 
+## Fruchterman and Reingold layout
 
-
-## Fruchterman and Reingold layout 
 ```{r}
 g <- ggraph(GAStech_graph, 
             layout = "fr") +
@@ -122,9 +114,8 @@ g <- ggraph(GAStech_graph,
 g + theme_graph()
 ```
 
-
-
 ## Modifying network nodes
+
 ```{r}
 g <- ggraph(GAStech_graph, 
             layout = "nicely") + 
@@ -135,9 +126,8 @@ g <- ggraph(GAStech_graph,
 g + theme_graph()
 ```
 
-
-
 ## Modifying edges
+
 ```{r}
 g <- ggraph(GAStech_graph, 
             layout = "nicely") +
@@ -150,10 +140,10 @@ g <- ggraph(GAStech_graph,
 g + theme_graph()
 ```
 
-
 ## Creating facet graphs
 
 ### Working with facet_edges()
+
 ```{r}
 set_graph_style()
 
@@ -168,9 +158,8 @@ g <- ggraph(GAStech_graph,
 g + facet_edges(~Weekday)
 ```
 
-
-
 ### Working with facet_edges()
+
 ```{r}
 set_graph_style()
 
@@ -186,9 +175,8 @@ g <- ggraph(GAStech_graph,
 g + facet_edges(~Weekday)
 ```
 
-
-
 ### A framed facet graph
+
 ```{r}
 set_graph_style() 
 
@@ -206,557 +194,145 @@ g + facet_edges(~Weekday) +
   theme(legend.position = 'bottom')
 ```
 
+### Working with facet_nodes()
 
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
 ```{r}
+set_graph_style()
 
+g <- ggraph(GAStech_graph, 
+            layout = "nicely") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department), 
+                  size = 2)
+  
+g + facet_nodes(~Department)+
+  th_foreground(foreground = "grey80",  
+                border = TRUE) +
+  theme(legend.position = 'bottom')
 ```
 
+## Network Metrics Analysis
 
+### Computing centrality indices
 
-### 
 ```{r}
-
-```
-
-
-
-### 
-```{r}
-
-```
-
-
-
-### 
-```{r}
-
+g <- GAStech_graph %>%
+  mutate(betweenness_centrality = centrality_betweenness()) %>%
+  ggraph(layout = "fr") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department,
+            size=betweenness_centrality))
+g + theme_graph()
 ```
 
+### Visualising network metrics
 
-
-### 
 ```{r}
-
+g <- GAStech_graph %>%
+  ggraph(layout = "fr") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = Department, 
+                      size = centrality_betweenness()))
+g + theme_graph()
 ```
-
 
+### Visualising Community
 
-### 
 ```{r}
+g <- GAStech_graph %>%
+  mutate(community = as.factor(group_edge_betweenness(weights = Weight, directed = TRUE))) %>%
+  ggraph(layout = "fr") + 
+  geom_edge_link(aes(width=Weight), 
+                 alpha=0.2) +
+  scale_edge_width(range = c(0.1, 5)) +
+  geom_node_point(aes(colour = community))  
 
+g + theme_graph()
 ```
 
+## Building Interactive Network Graph with visNetwork
 
+### Data preparation
 
-### 
 ```{r}
+GAStech_edges_aggregated <- GAStech_edges %>%
+  left_join(GAStech_nodes, by = c("sourceLabel" = "label")) %>%
+  rename(from = id) %>%
+  left_join(GAStech_nodes, by = c("targetLabel" = "label")) %>%
+  rename(to = id) %>%
+  filter(MainSubject == "Work related") %>%
+  group_by(from, to) %>%
+  summarise(weight = n(), .groups = "drop") %>%
+  filter(from != to) %>%
+  filter(weight > 1)
 
 ```
 
+### Plotting the first interactive network graph
 
-
-### 
 ```{r}
-
+visNetwork(GAStech_nodes, 
+           GAStech_edges_aggregated)
 ```
 
+### Working with layout
 
-
-### 
 ```{r}
-
+visNetwork(GAStech_nodes,
+           GAStech_edges_aggregated) %>%
+  visIgraphLayout(layout = "layout_with_fr") 
 ```
 
+## Working with visual attributes - Nodes
 
+### Rename Department field to group
 
-### 
 ```{r}
-
+GAStech_nodes <- GAStech_nodes %>%
+  rename(group = Department) 
 ```
 
+### VisNetwork shades the nodes by assigning unique colour to each category in the group field
 
-
-### 
 ```{r}
-
+visNetwork(GAStech_nodes,
+           GAStech_edges_aggregated) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
 ```
 
+## Working with visual attributes - Edges
 
+### visEdges() is used to symbolise the edges
 
-### 
 ```{r}
-
+visNetwork(GAStech_nodes,
+           GAStech_edges_aggregated) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visEdges(arrows = "to", 
+           smooth = list(enabled = TRUE, 
+                         type = "curvedCW")) %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
 ```
 
+## Interactivity
 
+### visOptions() is used to incorporate interactivity features in the data visualisation
 
-### 
 ```{r}
-
+visNetwork(GAStech_nodes,
+           GAStech_edges_aggregated) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visOptions(highlightNearest = TRUE,
+             nodesIdSelection = TRUE) %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
 ```
-
-
